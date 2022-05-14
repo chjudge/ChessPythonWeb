@@ -1,9 +1,7 @@
-def main():
-    print("hi")
-    print("goodbye")
-    print("whYU?")
-    print("deet")
-    print("bad")
+import chess
 
+def main():
+    Chess = chess.chess()
+    print("Program Complete")
 
 main()
