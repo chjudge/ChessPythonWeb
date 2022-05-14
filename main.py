@@ -1,7 +1,9 @@
-import chess
+import chess as c
+
 
 def main():
-    Chess = chess.chess()
+    chess = c.chess()
     print("Program Complete")
+
 
 main()
