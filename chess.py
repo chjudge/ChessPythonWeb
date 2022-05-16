@@ -1,4 +1,4 @@
 
 class Chess:
-    def main():
+    def __init__(self):
         print("This is chess")

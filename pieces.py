@@ -7,7 +7,7 @@ class Pieces(ABC):
         self.color = color
         self.hasMoved = False
     # abstract function for the movment o each type of piece
-    def canMove(self):
+    def canMove(self, move):
         pass
     # checks to see if piece can move
     # takes in argument move (which has start and end position)
