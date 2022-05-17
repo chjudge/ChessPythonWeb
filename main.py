@@ -1,7 +1,8 @@
-import chess as c
+from chess import Chess
 
 def main():
-    chess = c.Chess()
+    chess = Chess()
+    print(chess)
     print("Program Complete")
 
 if __name__=='__main__':

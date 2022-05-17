@@ -1,4 +1,4 @@
-import pieces as p
+import piece as p
  
 class King(p):
     # defining the canMove method

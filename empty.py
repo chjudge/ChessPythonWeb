@@ -1,5 +1,9 @@
-import pieces as p
+from piece import Piece as p
 
 class Empty(p):
-    def __init__(self):
-        super()
+    # Constuctor defined in parents
+    # def __init__(self, xpos, ypos, color):
+    #     p.__init__(self, xpos, ypos, color)
+    def toString(self):
+        print("hi")
+        return "EMPTY SPACE"

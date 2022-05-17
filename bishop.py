@@ -1,4 +1,4 @@
-import pieces as p
+import piece as p
 
 class Bishop(p):
     # defining the canMove method

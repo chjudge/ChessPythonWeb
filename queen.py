@@ -1,4 +1,4 @@
-import pieces as p
+import piece as p
 
 class Queen(p):
     # defining the canMove method
