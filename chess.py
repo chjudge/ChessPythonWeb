@@ -6,6 +6,8 @@ from rook import Rook
 from bishop import Bishop
 from queen import Queen
 from king import King
+# colored text for console output
+from colorama import Fore, Style
 class Chess:
     # Chess constructor
     def __init__(self):
@@ -54,10 +56,15 @@ class Chess:
         for rowArr in self.board:
             print_string += "["
             for pieceIndex in range(8):
+                # sets the color for the pieces
+                if(rowArr[pieceIndex].getColor() == "black"):
+                    print_string += Fore.RED
+                elif(rowArr[pieceIndex].getColor() == "white"):
+                    print_string += Fore.BLUE
+                print_string += f"{str(rowArr[pieceIndex])}"
+                print_string += Style.RESET_ALL
                 if(pieceIndex != 7):
-                    print_string += f"{str(rowArr[pieceIndex])},"
-                else:
-                    print_string += f"{str(rowArr[pieceIndex])}"
+                    print_string += ","
             print_string += "]\n"
         return print_string
                 

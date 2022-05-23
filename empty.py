@@ -11,4 +11,4 @@ class Empty(p):
 
     #toString function
     def __str__(self):
-        return " e "
+        return "   "
