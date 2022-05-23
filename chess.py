@@ -54,7 +54,7 @@ class Chess:
         print_string = "Chess Board: \n"
         #gets the row in board
         for rowArr in self.board:
-            print_string += "["
+            # print_string += "["
             for pieceIndex in range(8):
                 # sets the color for the pieces
                 if(rowArr[pieceIndex].getColor() == "black"):
@@ -64,7 +64,8 @@ class Chess:
                 print_string += f"{str(rowArr[pieceIndex])}"
                 print_string += Style.RESET_ALL
                 if(pieceIndex != 7):
-                    print_string += ","
-            print_string += "]\n"
+                    print_string += "|"
+            if(self.board[7] != rowArr):
+                print_string += "\n___ ___ ___ ___ ___ ___ ___ ___\n"
         return print_string
                 
