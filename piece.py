@@ -1,5 +1,5 @@
-# from abc import ABC, abstractmethod
-class Piece():
+from abc import ABC, abstractmethod
+class Piece(ABC):
     # constructor for abstract
     def __init__(self, xPos, yPos, color):
         self.xPos = xPos
@@ -7,10 +7,9 @@ class Piece():
         self.color = color
         self.hasMoved = False
     # abstract function for the movment o each type of piece
-    # @abstractmethod
+    @abstractmethod
     def canMove(self, move):
-        print("hi")
-        # pass
+        pass
     # checks to see if piece can move
     # takes in argument move (which has start and end position)
     # @abstractmethod
@@ -28,6 +27,6 @@ class Piece():
         return self.hasMoved
 
     # toString method (is abstract)
-    # @abstractmethod
+    @abstractmethod
     def __str__(self):
-        return "z"
+        pass

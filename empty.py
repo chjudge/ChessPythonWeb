@@ -4,6 +4,11 @@ class Empty(p):
     # Constuctor defined in parents
     # def __init__(self, xpos, ypos, color):
     #     p.__init__(self, xpos, ypos, color)
-    def toString(self):
-        print("hi")
-        return "EMPTY SPACE"
+
+    #can't move
+    def canMove(self, move):
+        print("This space is Empty")
+
+    #toString function
+    def __str__(self):
+        return " e "
