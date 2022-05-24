@@ -1,4 +1,4 @@
-# from piece import Piece 
+# Pieces
 from empty import Empty
 from pawn import Pawn
 from knight import Knight
@@ -6,6 +6,8 @@ from rook import Rook
 from bishop import Bishop
 from queen import Queen
 from king import King
+# Move
+from move import Move
 # colored text for console output
 from colorama import Fore, Style
 class Chess:
@@ -13,18 +15,46 @@ class Chess:
     def __init__(self):
         self.board = [[Empty for col in range(8)] for row in range(8)]
         self.fillBoard()
-        self.gameLoop()
+        self.move = Move()
 
     # the man loop where the game happens
     def gameLoop(self) -> None:
-        print("this is the game loop")
-        # get user input 
+        while(input("Would you like to move? (y/n)\n") == "y"):
 
-        # check user input is valid
+        # GET USER INPUT--------------------------------------------------------------------
+            validInput = False
+            # while loop double checks that the input is valid for chess notation
+            # (valid move is checked elsewhere)
+            while(not validInput):
+                moveInput = input("Please input your move with the following notation: " +
+                        "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n")
+                if(len(moveInput) == 5 and (moveInput[0] and moveInput[3]) in "abcdefgh" 
+                    and (moveInput[1] and moveInput[4]) in "12345678"):
+                    validInput = True
+                else:
+                    print(Fore.RED + "Invalid input!" + Style.RESET_ALL)
+            self.move.setMove(moveInput)
+            print(f"Your movement of {moveInput} is (Col,Row): " + 
+                f" ({self.move.getStartC()},{self.move.getStartR()})" + 
+                f" -> ({self.move.getEndC()},{self.move.getEndR()})\n")
+        
+        # CHECK USER INPUT IS VALID----------------------------------------------------------
+            validMove = True
 
-        # make change to board
-
-        # repeat 
+         # MAKE THE "MOVE" CHANGE-------------------------------------------------------------
+            if(validMove):
+                self.board[self.move.getEndR()][self.move.getEndC()] = (
+                    type(self.board[self.move.getStartR()][self.move.getStartC()])
+                    (self.move.getEndR(),self.move.getEndC(), 
+                    self.board[self.move.getStartR()][self.move.getStartC()].getColor())
+                )
+                
+                self.board[self.move.getStartR()][self.move.getStartC()] = (
+                    Empty(self.move.getStartR(), self.move.getStartC(), "n/a")
+                )
+                # print(f"Color at new square is: {self.board[self.move.getEndR()][self.move.getEndC()].getColor()}")
+        # REPEAT------------------------------------------------------------------------------
+            print(self.__str__())
 
     # sets the board up for the beginning of the game
     def fillBoard(self) -> None:
