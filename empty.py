@@ -8,6 +8,7 @@ class Empty(p):
     #can't move
     def canMove(self, move):
         print("This space is Empty")
+        return False
 
     #toString function
     def __str__(self):

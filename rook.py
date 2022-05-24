@@ -5,7 +5,8 @@ class Rook(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, nove):
-        print("Rook can move")
+        # print("Rook can move")
+        return False
 
     def __str__(self):
         return " R "

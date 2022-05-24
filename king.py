@@ -5,7 +5,8 @@ class King(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, nove):
-        print("King can move")
+        # print("King can move")
+        return False
 
     def __str__(self):
         return " K "

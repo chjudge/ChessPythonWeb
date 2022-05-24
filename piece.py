@@ -1,5 +1,6 @@
 # abstraction
 from abc import ABC, abstractmethod
+from xmlrpc.client import Boolean
 class Piece(ABC):
     # constructor for abstract
     def __init__(self, xPos, yPos, color):
@@ -11,7 +12,7 @@ class Piece(ABC):
     # takes in argument move (which has start and end position)
     # checks to see if the piece can move
     @abstractmethod
-    def canMove(self, move):
+    def canMove(self, move) -> Boolean:
         pass
 
     # getter methods

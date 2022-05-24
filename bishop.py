@@ -5,7 +5,8 @@ class Bishop(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, nove):
-        print("Bishop can move")
+        # print("Bishop can move")
+        return False
 
     def __str__(self):
         return " B "
