@@ -13,10 +13,21 @@ class Chess:
     def __init__(self):
         self.board = [[Empty for col in range(8)] for row in range(8)]
         self.fillBoard()
-        print("This is chess")
-        # self.__str__()
+        self.gameLoop()
 
-    def fillBoard(self):
+    # the man loop where the game happens
+    def gameLoop(self) -> None:
+        print("this is the game loop")
+        # get user input 
+
+        # check user input is valid
+
+        # make change to board
+
+        # repeat 
+
+    # sets the board up for the beginning of the game
+    def fillBoard(self) -> None:
         for row in range(8):
             for col in range(8):
                 # all black pieces
@@ -50,11 +61,10 @@ class Chess:
                     self.board[row][col] = Empty(row,col,"n/a")
     
     # prints out the board
-    def __str__(self):
+    def __str__(self) -> None:
         print_string = "Chess Board: \n"
         #gets the row in board
         for rowArr in self.board:
-            # print_string += "["
             for pieceIndex in range(8):
                 # sets the color for the pieces
                 if(rowArr[pieceIndex].getColor() == "black"):
