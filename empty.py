@@ -6,7 +6,7 @@ class Empty(p):
     #     p.__init__(self, xpos, ypos, color)
 
     #can't move
-    def canMove(self, move):
+    def canMove(self, move, board):
         print("This space is Empty")
         return False
 

@@ -16,12 +16,12 @@ class Chess:
         self.board = [[Empty for col in range(8)] for row in range(8)]
         self.fillBoard()
         self.move = Move()
-        self.whiteToMove = False
+        self.whiteToMove = True
 
     # the man loop where the game happens
     def gameLoop(self) -> None:
         # loop represents the overall game loop
-        while(input("Would you like to move? (y/n)\n") == "y"):       
+        while(True): #input("Would you like to move? (y/n)\n") == "y"       
 
         # GET USER INPUT--------------------------------------------------------------------
             validInput = False
@@ -42,13 +42,12 @@ class Chess:
         
         # CHECK USER INPUT IS VALID----------------------------------------------------------
             validMove = False
-            # checks to see if the color of the piece can even move
             if(
                 (self.whiteToMove and self.board[self.move.getStartR()][self.move.getStartC()].getColor() == "white")
                 or
                 (not self.whiteToMove and self.board[self.move.getStartR()][self.move.getStartC()].getColor() == "black")
             ):
-                validMove = self.board[self.move.getStartR()][self.move.getStartC()].canMove(self.move)
+                validMove = self.board[self.move.getStartR()][self.move.getStartC()].canMove(self.move, self.board)
             else:
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
             if(not validMove):
@@ -63,6 +62,7 @@ class Chess:
                     (self.move.getEndR(),self.move.getEndC(), 
                     self.board[self.move.getStartR()][self.move.getStartC()].getColor())
                 )
+                self.board[self.move.getEndR()][self.move.getEndC()].moved()
                     
                 self.board[self.move.getStartR()][self.move.getStartC()] = (
                     Empty(self.move.getStartR(), self.move.getStartC(), "n/a")
@@ -77,30 +77,30 @@ class Chess:
             for col in range(8):
                 # all black pieces
                 if(row == 0 and (col == 0 or col == 7)):  
-                    self.board[row][col] = Rook(row,col,"white")
+                    self.board[row][col] = Rook(row,col,"black")
                 elif(row == 0 and (col == 1 or col == 6)):
-                    self.board[row][col] = Knight(row, col,"white")
+                    self.board[row][col] = Knight(row, col,"black")
                 elif(row == 0 and (col == 2 or col == 5)):
-                    self.board[row][col] = Bishop(row, col,"white")
+                    self.board[row][col] = Bishop(row, col,"black")
                 elif(row == 0 and col == 3):
-                    self.board[row][col] = Queen(row, col,"white")
+                    self.board[row][col] = Queen(row, col,"black")
                 elif(row == 0 and col == 4):
-                    self.board[row][col] = King(row, col,"white")
+                    self.board[row][col] = King(row, col,"black")
                 elif(row == 1):
-                    self.board[row][col] = Pawn(row, col,"white")
+                    self.board[row][col] = Pawn(row, col,"black")
                 # all white pieces
                 elif(row == 7 and (col == 0 or col == 7)):  
-                    self.board[row][col] = Rook(row,col,"black")
+                    self.board[row][col] = Rook(row,col,"white")
                 elif(row == 7 and (col == 1 or col == 6)):
-                    self.board[row][col] = Knight(row, col,"black")
+                    self.board[row][col] = Knight(row, col,"white")
                 elif(row == 7 and (col == 2 or col == 5)):
-                    self.board[row][col] = Bishop(row, col,"black")
+                    self.board[row][col] = Bishop(row, col,"white")
                 elif(row == 7 and col == 3):
-                    self.board[row][col] = Queen(row, col,"black")
+                    self.board[row][col] = Queen(row, col,"white")
                 elif(row == 7 and col == 4):
-                    self.board[row][col] = King(row, col,"black")
+                    self.board[row][col] = King(row, col,"white")
                 elif(row == 6):
-                    self.board[row][col] = Pawn(row, col,"black")
+                    self.board[row][col] = Pawn(row, col,"white")
                 # all empty squares
                 else:
                     self.board[row][col] = Empty(row,col,"n/a")

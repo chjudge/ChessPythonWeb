@@ -4,7 +4,7 @@ class King(p):
     # Constuctor defined in parents
 
     # defining the canMove method: involves defining how the piece moves
-    def canMove(self, nove):
+    def canMove(self, move, board):
         # print("King can move")
         return False
 
