@@ -8,8 +8,8 @@ class Pawn(p):
     def canMove(self, move, board):
         endR = move.getEndR()
         endC = move.getEndC()
-
         color = self.getColor()
+        
         # up-2, up1, take diagnol, en passant, false
         if(
             isinstance(board[endR][endC], Empty) and
