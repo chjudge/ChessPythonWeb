@@ -11,9 +11,12 @@ class Queen(p):
         startC = self.getX()
         # general parameter check
         if((endR == startR and endC == startC) or 
-            (abs(startR - endR) != abs(startC - endC) and (endR == startR or endC == startC) )):
+            (abs(startR - endR) != abs(startC - endC) and (endR != startR or endC != startC) )):
             return False
         
+        print(endR == startR and endC == startC)
+        print(f"{abs(startR - endR) != abs(startC - endC)} and {endR == startR or endC == startC}")
+
         return True
 
     def __str__(self):
