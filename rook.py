@@ -8,37 +8,78 @@ class Rook(p):
     def canMove(self, move, board):
         endR = move.getEndR()
         endC = move.getEndC()
-        if((endR == self.getY() and endC == self.getX()) or
-            (self.getY() != endR and self.getX() != endC)):
-            print("1")
+        startR = self.getY()
+        startC = self.getX()
+        # general parameter check
+        if((endR == startR and endC == startC) or
+            (startR != endR and startC != endC)):
             return False
-        color = self.getColor()  
         
         # checks horizontal or vertical
         # then checks to make sure there are no pieces in the way & the end square is the right color
-        if(self.getY() != endR):
-            minVal = min(self.getY(), endR)
-            maxVal = max(self.getY(), endR)
-            for diff in range(1,maxVal - minVal):
-                if(not isinstance(board[minVal + diff][endC], Empty)):
-                    print("2")
-                    return False
-            if(board[endR][endC].getColor() == color):
-                print("3")
-                return False
-            print("vertical movment")
+        HORIZONTAL = 0
+        VERTICAL = 0 
+        if(startC == endC):
+            VERTICAL = (startR - endR)/abs(endR - startR)
         else:
-            minVal = min(self.getX(), endC)
-            maxVal = max(self.getX(), endC)
-            for diff in range(1, maxVal - minVal):
-                if(not isinstance(board[endR][minVal + diff], Empty)):
-                    print("4")
-                    return False
-            if(board[endR][endC].getColor() == color):
-                print("5")
+            HORIZONTAL = (endC - startC)/abs(endC - startC)
+        for diff in range(1,abs(startR - endR)):
+            if(not isinstance(board[(int)(startR - diff * VERTICAL)][(int)(startC + diff * HORIZONTAL)], Empty)):
                 return False
-            print("horizontal movement")
+        if(board[endR][endC].getColor() == self.getColor()):
+            return False
         return True
+
+        # PHASE 2 ------------------------------------
+
+        # HORIZONTAL = 0
+        # VERTICAL = 0
+        # if(startR == endR):
+        #     minVal = min(startC, endC)
+        #     maxVal = max(startC, endC)
+        #     HORIZONTAL = 1
+        # else:
+        #     minVal = min(startR, endR)
+        #     maxVal = max(startR, endR)
+        #     VERTICAL = 1        
+        # # since board[row][col] uses minimal value, row can be added to (rather than subtracted)
+        # for diff in range(1,maxVal - minVal):
+        #     if( not isinstance(board
+        #         [endR * HORIZONTAL + (minVal + diff)  * VERTICAL]
+        #         [endC * VERTICAL + (minVal + diff) * HORIZONTAL], Empty)
+        #     ):
+        #         return False
+        # if(board[endR][endC].getColor() == self.getColor()):
+        #     return False
+        # return True
+
+        # PHASE 1 ------------------------------------
+
+        # HORIZONTAL = 0
+        # VERTICAL = 0
+        # if(self.getY() != endR):
+        #     minVal = min(self.getY(), endR)
+        #     maxVal = max(self.getY(), endR)
+        #     for diff in range(1,maxVal - minVal):
+        #         if(not isinstance(board[minVal + diff][endC], Empty)):
+        #             print("2")
+        #             return False
+        #     if(board[endR][endC].getColor() == color):
+        #         print("3")
+        #         return False
+        #     print("vertical movment")
+        # else:
+        #     minVal = min(self.getX(), endC)
+        #     maxVal = max(self.getX(), endC)
+        #     for diff in range(1, maxVal - minVal):
+        #         if(not isinstance(board[endR][minVal + diff], Empty)):
+        #             print("4")
+        #             return False
+        #     if(board[endR][endC].getColor() == color):
+        #         print("5")
+        #         return False
+        #     print("horizontal movement")
+        # return True
 
     def __str__(self):
         return " R "

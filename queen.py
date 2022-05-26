@@ -5,8 +5,16 @@ class Queen(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, move, board):
-        # print("Queen can move")
-        return False
+        endR = move.getEndR()
+        endC = move.getEndC()
+        startR = self.getY()
+        startC = self.getX()
+        # general parameter check
+        if((endR == startR and endC == startC) or 
+            (abs(startR - endR) != abs(startC - endC) and (endR == startR or endC == startC) )):
+            return False
+        
+        return True
 
     def __str__(self):
         return " Q "
