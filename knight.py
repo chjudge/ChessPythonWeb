@@ -5,7 +5,10 @@ class Knight(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, move, board):
-        # print("Knight can move")
+        endR = move.getEndR()
+        endC = move.getEndC()
+        startR = self.getY()
+        startC = self.getX()
         return False
 
     def __str__(self):
