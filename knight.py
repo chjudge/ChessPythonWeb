@@ -15,8 +15,8 @@ class Knight(p):
         if(endR == startR and endC == startC):
             return False
 
-        if(math.sqrt(math.pow(startR - endR,2) + math.pow(startC - endC,2)) != math.sqrt(5) or
-            isinstance(board[endR][endC],Knight)):
+        if(math.sqrt(math.pow(startR - endR,2) + math.pow(startC - endC,2)) != math.sqrt(5) or 
+            board[endR][endC].getColor() == self.getColor()):
             return False
 
         return True
