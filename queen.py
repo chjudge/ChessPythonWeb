@@ -10,9 +10,7 @@ class Queen(p):
         endC = move.getEndC()
         startR = self.getY()
         startC = self.getX()
-
-        print(endR == startR and endC == startC)
-        print(f"{abs(startR - endR) != abs(startC - endC)} and {endR == startR or endC == startC}")
+        
         # general parameter check
         if((endR == startR and endC == startC) or 
             (abs(startR - endR) != abs(startC - endC) and (endR != startR and endC != startC) )):
