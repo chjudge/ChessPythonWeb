@@ -1,4 +1,3 @@
-from sqlalchemy import Integer
 from piece import Piece as p
 from empty import Empty
 

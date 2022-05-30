@@ -17,13 +17,15 @@ class Chess:
     def __init__(self):
         self.board = [[Empty for col in range(8)] for row in range(8)]
         self.fillBoard()
+        self.white_king = self.board[7][4]
+        self.black_king = self.board[0][4]
         self.move = Move()
         self.whiteToMove = True
 
     # the man loop where the game happens
     def gameLoop(self) -> None:
         # loop represents the overall game loop
-        while (True):  # input("Would you like to move? (y/n)\n") == "y"
+        while True:  # input("Would you like to move? (y/n)\n") == "y"
 
             # GET USER INPUT--------------------------------------------------------------------
 
@@ -31,13 +33,12 @@ class Chess:
             # (valid move is checked elsewhere)
 
             moveInput = input("Please input your move with the following notation: " +
-                              "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n")
-            if not (len(moveInput) == 5 and (moveInput[0] and moveInput[3]) in "abcdefgh"
-                    and (moveInput[1] and moveInput[4]) in "12345678"):
+                              "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n").lower()
+            move_validate = self.move.setMove(moveInput)
+            if move_validate is False:
                 print(Fore.RED + "Invalid input!" + Style.RESET_ALL)
                 continue
 
-            self.move.setMove(moveInput)
             print(f"Your movement of {moveInput} is (Col,Row): " +
                   f" ({self.move.getStartC()},{self.move.getStartR()})" +
                   f" -> ({self.move.getEndC()},{self.move.getEndR()})\n")
@@ -54,13 +55,10 @@ class Chess:
                 validMove = self.board[self.move.getStartR()][self.move.getStartC()].canMove(self.move, self.board)
             else:
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
-            if (not validMove):
-                print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
-            else:
-                self.whiteToMove = not self.whiteToMove
+                continue
 
             # MAKE THE "MOVE" CHANGE------------------------------------------------------------
-            if (validMove):
+            if validMove:
                 self.board[self.move.getEndR()][self.move.getEndC()] = (
                     type(self.board[self.move.getStartR()][self.move.getStartC()])
                     (self.move.getEndR(), self.move.getEndC(),
@@ -71,9 +69,34 @@ class Chess:
                 self.board[self.move.getStartR()][self.move.getStartC()] = (
                     Empty(self.move.getStartR(), self.move.getStartC(), "n/a")
                 )
+                if isinstance(self.board[self.move.getEndR()][self.move.getEndC()], King):
+                    if self.whiteToMove:
+                        self.white_king = self.board[self.move.getEndR()][self.move.getEndC()]
+                    else:
+                        self.black_king = self.board[self.move.getEndR()][self.move.getEndC()]
+                self.whiteToMove = not self.whiteToMove
                 # print(f"Color at new square is: {self.board[self.move.getEndR()][self.move.getEndC()].getColor()}")
+            else:
+                print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
             # REPEAT------------------------------------------------------------------------------
             print(self.__str__())
+
+    def in_check(self) -> bool:
+        # check if the king is in check
+        if self.whiteToMove:
+            king = self.white_king
+        else:
+            king = self.black_king
+        for row in range(8):
+            for col in range(8):
+                if (
+                        (self.whiteToMove and self.board[row][col].getColor() == "black")
+                        or
+                        (not self.whiteToMove and self.board[row][col].getColor() == "white")
+                ):
+                    if self.board[row][col].canMove(Move(king.getRow(), king.getCol(), row, col), self.board):
+                        return True
+        return False
 
     # sets the board up for the beginning of the game
     def fillBoard(self) -> None:

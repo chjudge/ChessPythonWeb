@@ -1,7 +1,3 @@
-
-from shutil import move
-
-
 class Move():
     def __init__(self):
         self.startPosR = None
@@ -12,7 +8,10 @@ class Move():
     # Setter Method
     # moveNotation is a string that will be converted into a the move variables 
     # Chess move notation is as follows: [pieceLocation]-[pieceDestination] ex.) b1-a3 *knight move
-    def setMove(self, moveNotation): 
+    def setMove(self, moveNotation):
+        if not (len(moveNotation) == 5 and (moveNotation[0] and moveNotation[3]) in "abcdefgh"
+                and (moveNotation[1] and moveNotation[4]) in "12345678"):
+            return False
         self.startPosC = "abcdefgh".index(moveNotation[0])
         self.startPosR = self.invertRowNums((int)(moveNotation[1]) - 1)
         self.endPosC = "abcdefgh".index(moveNotation[3])
