@@ -20,18 +20,10 @@ class Piece(ABC):
     def moved(self) -> None:
         self.hasMoved = True
 
-    # getter methods
-    def get_col(self):
-        return self.col
-
-    def get_row(self):
-        return self.row
-
-    def getColor(self):
-        return self.color
-
-    def hasMoved(self):
-        return self.hasMoved
+    #changes the row & col for the piece
+    def pieceMove(self, row, col):
+        self.row = row
+        self.col = col
 
     # toString method (is abstract)
     @abstractmethod

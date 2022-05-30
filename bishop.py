@@ -6,10 +6,10 @@ class Bishop(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, move, board):
-        endR = move.getEndR()
-        endC = move.getEndC()
-        startR = self.get_row()
-        startC = self.get_col()
+        endR = move.end_row
+        endC = move.end_col
+        startR = self.row
+        startC = self.col
         # general parameter check
         if(endR == startR or endC == startC or abs(startR - endR) != abs(startC - endC)):
             return False
@@ -19,9 +19,9 @@ class Bishop(p):
         VERTICAL = (startR - endR)/abs(endR - startR)
         HORIZONTAL = (endC - startC)/abs(endC - startC)
         for diff in range(1,abs(startR - endR)):
-            if(not isinstance(board[(int)(startR - diff * VERTICAL)][(int)(startC + diff * HORIZONTAL)], Empty)):
+            if(not isinstance(board.getPiece((int)(startR - diff * VERTICAL), (int)(startC + diff * HORIZONTAL)), Empty)):
                 return False
-        if(board[endR][endC].getColor() == self.getColor()):
+        if(board.getPiece(endR, endC).color == self.color):
             return False
         return True
 

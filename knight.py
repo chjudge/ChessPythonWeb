@@ -5,10 +5,10 @@ class Knight(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, move, board):
-        endR = move.getEndR()
-        endC = move.getEndC()
-        startR = self.get_row()
-        startC = self.get_col()
+        endR = move.end_row
+        endC = move.end_col
+        startR = self.row
+        startC = self.col
 
         # general parameter check
         # uses distance formula to check if the move is legal
@@ -16,7 +16,7 @@ class Knight(p):
             return False
 
         if(math.sqrt(math.pow(startR - endR,2) + math.pow(startC - endC,2)) != math.sqrt(5) or 
-            board[endR][endC].getColor() == self.getColor()):
+            board.getPiece(endR, endC).color == self.color):
             return False
 
         return True

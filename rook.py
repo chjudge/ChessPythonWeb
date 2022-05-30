@@ -6,10 +6,10 @@ class Rook(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, move, board):
-        endR = move.getEndR()
-        endC = move.getEndC()
-        startR = self.get_row()
-        startC = self.get_col()
+        endR = move.end_row
+        endC = move.end_col
+        startR = self.row
+        startC = self.col
         # general parameter check
         if((endR == startR and endC == startC) or
             (startR != endR and startC != endC)):
@@ -24,9 +24,9 @@ class Rook(p):
         else:
             HORIZONTAL = (endC - startC)/abs(endC - startC)
         for diff in range(1,abs(startR - endR)):
-            if(not isinstance(board[(int)(startR - diff * VERTICAL)][(int)(startC + diff * HORIZONTAL)], Empty)):
+            if(not isinstance(board.getPiece((int)(startR - diff * VERTICAL), (int)(startC + diff * HORIZONTAL))], Empty)):
                 return False
-        if(board[endR][endC].getColor() == self.getColor()):
+        if(board.getPiece(endR, endC).color == self.color):
             return False
         return True
 
@@ -49,7 +49,7 @@ class Rook(p):
         #         [endC * VERTICAL + (minVal + diff) * HORIZONTAL], Empty)
         #     ):
         #         return False
-        # if(board[endR][endC].getColor() == self.getColor()):
+        # if(board.getPiece(endR, endC).color == self.color):
         #     return False
         # return True
 
@@ -64,7 +64,7 @@ class Rook(p):
         #         if(not isinstance(board[minVal + diff][endC], Empty)):
         #             print("2")
         #             return False
-        #     if(board[endR][endC].getColor() == color):
+        #     if(board.getPiece(endR, endC).color == color):
         #         print("3")
         #         return False
         #     print("vertical movment")
@@ -75,7 +75,7 @@ class Rook(p):
         #         if(not isinstance(board[endR][minVal + diff], Empty)):
         #             print("4")
         #             return False
-        #     if(board[endR][endC].getColor() == color):
+        #     if(board.getPiece(endR, endC).color == color):
         #         print("5")
         #         return False
         #     print("horizontal movement")

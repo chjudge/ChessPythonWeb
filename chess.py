@@ -18,10 +18,6 @@ class Chess:
     # Chess constructor
     def __init__(self):
         self.board = Board()
-        # self.board = [[Empty for col in range(8)] for row in range(8)]
-        # self.fillBoard()
-        # self.white_king = self.board[7][4]
-        # self.black_king = self.board[0][4]
         self.move = Move()
         self.whiteToMove = True
 
@@ -43,42 +39,42 @@ class Chess:
                 continue
 
             print(f"Your movement of {moveInput} is (Col,Row): " +
-                  f" ({self.move.getStartC()},{self.move.getStartR()})" +
-                  f" -> ({self.move.getEndC()},{self.move.getEndR()})\n")
+                  f" ({self.move.start_col},{self.move.start_row})" +
+                  f" -> ({self.move.end_col},{self.move.end_row})\n")
 
             # CHECK USER INPUT IS VALID----------------------------------------------------------
             validMove = False
             if (
-                    (self.whiteToMove and self.board[self.move.getStartR()][
-                        self.move.getStartC()].getColor() == "white")
+                    (self.whiteToMove and 
+                    self.board.getPiece(self.move.start_row, self.move.start_col).color == "white")
                     or
-                    (not self.whiteToMove and self.board[self.move.getStartR()][
-                        self.move.getStartC()].getColor() == "black")
+                    (not self.whiteToMove and 
+                    self.board.getPiece(self.move.start_row, self.move.start_col).color == "black")
             ):
-                validMove = self.board[self.move.getStartR()][self.move.getStartC()].canMove(self.move, self.board)
+                validMove = self.board.getPiece(self.move.start_row,self.move.start_col).canMove(self.move, self.board)
             else:
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
                 continue
 
             # MAKE THE "MOVE" CHANGE------------------------------------------------------------
             if validMove:
-                self.board[self.move.getEndR()][self.move.getEndC()] = (
-                    type(self.board[self.move.getStartR()][self.move.getStartC()])
-                    (self.move.getEndR(), self.move.getEndC(),
-                     self.board[self.move.getStartR()][self.move.getStartC()].getColor())
+                self.board.getPiece(self.move.end_row,self.move.end_col) = (
+                    type(self.board.getPiece(self.move.start_row,self.move.start_col))
+                    (self.move.end_row, self.move.end_col,
+                     self.board.getPiece(self.move.start_row,self.move.start_col).color)
                 )
-                self.board[self.move.getEndR()][self.move.getEndC()].moved()
+                self.board.getPiece(self.move.end_row,self.move.end_col).moved()
 
-                self.board[self.move.getStartR()][self.move.getStartC()] = (
-                    Empty(self.move.getStartR(), self.move.getStartC(), "n/a")
+                self.board.getPiece(self.move.start_row,self.move.start_col) = (
+                    Empty(self.move.start_row, self.move.start_col, "n/a")
                 )
-                if isinstance(self.board[self.move.getEndR()][self.move.getEndC()], King):
+                if isinstance(self.board.getPiece(self.move.end_row,self.move.end_col), King):
                     if self.whiteToMove:
-                        self.white_king = self.board[self.move.getEndR()][self.move.getEndC()]
+                        self.white_king = self.board.getPiece(self.move.end_row,self.move.end_col)
                     else:
-                        self.black_king = self.board[self.move.getEndR()][self.move.getEndC()]
+                        self.black_king = self.board.getPiece(self.move.end_row,self.move.end_col)
                 self.whiteToMove = not self.whiteToMove
-                # print(f"Color at new square is: {self.board[self.move.getEndR()][self.move.getEndC()].getColor()}")
+                # print(f"Color at new square is: {self.board.getPiece(self.move.end_row,self.move.end_col).color}")
             else:
                 print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
             # REPEAT------------------------------------------------------------------------------
@@ -93,47 +89,47 @@ class Chess:
         for row in range(8):
             for col in range(8):
                 if (
-                        (self.whiteToMove and self.board[row][col].getColor() == "black")
+                        (self.whiteToMove and self.board[row][col].color == "black")
                         or
-                        (not self.whiteToMove and self.board[row][col].getColor() == "white")
+                        (not self.whiteToMove and self.board[row][col].color == "white")
                 ):
-                    if self.board[row][col].canMove(Move(king.getRow(), king.getCol(), row, col), self.board):
+                    if self.board[row][col].canMove(Move(king.row, king.col, row, col), self.board):
                         return True
         return False
 
-    # sets the board up for the beginning of the game
-    def fillBoard(self) -> None:
-        for row in range(8):
-            for col in range(8):
-                # all black pieces
-                if (row == 0 and (col == 0 or col == 7)):
-                    self.board[row][col] = Rook(row, col, "black")
-                elif (row == 0 and (col == 1 or col == 6)):
-                    self.board[row][col] = Knight(row, col, "black")
-                elif (row == 0 and (col == 2 or col == 5)):
-                    self.board[row][col] = Bishop(row, col, "black")
-                elif (row == 0 and col == 3):
-                    self.board[row][col] = Queen(row, col, "black")
-                elif (row == 0 and col == 4):
-                    self.board[row][col] = King(row, col, "black")
-                elif (row == 1):
-                    self.board[row][col] = Pawn(row, col, "black")
-                # all white pieces
-                elif (row == 7 and (col == 0 or col == 7)):
-                    self.board[row][col] = Rook(row, col, "white")
-                elif (row == 7 and (col == 1 or col == 6)):
-                    self.board[row][col] = Knight(row, col, "white")
-                elif (row == 7 and (col == 2 or col == 5)):
-                    self.board[row][col] = Bishop(row, col, "white")
-                elif (row == 7 and col == 3):
-                    self.board[row][col] = Queen(row, col, "white")
-                elif (row == 7 and col == 4):
-                    self.board[row][col] = King(row, col, "white")
-                elif (row == 6):
-                    self.board[row][col] = Pawn(row, col, "white")
-                # all empty squares
-                else:
-                    self.board[row][col] = Empty(row, col, "n/a")
+    # # sets the board up for the beginning of the game
+    # def fillBoard(self) -> None:
+    #     for row in range(8):
+    #         for col in range(8):
+    #             # all black pieces
+    #             if (row == 0 and (col == 0 or col == 7)):
+    #                 self.board[row][col] = Rook(row, col, "black")
+    #             elif (row == 0 and (col == 1 or col == 6)):
+    #                 self.board[row][col] = Knight(row, col, "black")
+    #             elif (row == 0 and (col == 2 or col == 5)):
+    #                 self.board[row][col] = Bishop(row, col, "black")
+    #             elif (row == 0 and col == 3):
+    #                 self.board[row][col] = Queen(row, col, "black")
+    #             elif (row == 0 and col == 4):
+    #                 self.board[row][col] = King(row, col, "black")
+    #             elif (row == 1):
+    #                 self.board[row][col] = Pawn(row, col, "black")
+    #             # all white pieces
+    #             elif (row == 7 and (col == 0 or col == 7)):
+    #                 self.board[row][col] = Rook(row, col, "white")
+    #             elif (row == 7 and (col == 1 or col == 6)):
+    #                 self.board[row][col] = Knight(row, col, "white")
+    #             elif (row == 7 and (col == 2 or col == 5)):
+    #                 self.board[row][col] = Bishop(row, col, "white")
+    #             elif (row == 7 and col == 3):
+    #                 self.board[row][col] = Queen(row, col, "white")
+    #             elif (row == 7 and col == 4):
+    #                 self.board[row][col] = King(row, col, "white")
+    #             elif (row == 6):
+    #                 self.board[row][col] = Pawn(row, col, "white")
+    #             # all empty squares
+    #             else:
+    #                 self.board[row][col] = Empty(row, col, "n/a")
 
     # prints out the board
 

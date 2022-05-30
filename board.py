@@ -47,15 +47,19 @@ class Board:
         for p in self.black_pieces:
             self.board[p.row][p.col] = p
 
+    # returns the piece at a specific location 
+    def getPiece(self, row, col):
+        return self.board[row][col]
+
     def __str__(self) -> None:
         print_string = "Chess Board: \n"
         # gets the row in board
         for rowArr in self.board:
             for pieceIndex in range(8):
                 # sets the color for the pieces
-                if (rowArr[pieceIndex].getColor() == "black"):
+                if (rowArr[pieceIndex].color == "black"):
                     print_string += Fore.RED
-                elif (rowArr[pieceIndex].getColor() == "white"):
+                elif (rowArr[pieceIndex].color == "white"):
                     print_string += Fore.BLUE
                 print_string += f"{str(rowArr[pieceIndex])}"
                 print_string += Style.RESET_ALL

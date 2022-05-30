@@ -6,10 +6,10 @@ class Queen(p):
 
     # defining the canMove method: involves defining how the piece moves
     def canMove(self, move, board):
-        endR = move.getEndR()
-        endC = move.getEndC()
-        startR = self.get_row()
-        startC = self.get_col()
+        endR = move.end_row
+        endC = move.end_col
+        startR = self.row
+        startC = self.col
         
         # general parameter check
         if((endR == startR and endC == startC) or 
@@ -26,10 +26,10 @@ class Queen(p):
             HORIZONTAL = (endC - startC)/abs(endC - startC)
 
         for diff in range(1,abs(startR - endR)):
-            if(not isinstance(board[(int)(startR - diff * VERTICAL)][(int)(startC + diff * HORIZONTAL)], Empty)):
+            if(not isinstance(board.getPiece((int)(startR - diff * VERTICAL), (int)(startC + diff * HORIZONTAL))], Empty)):
                 print("1")
                 return False
-        if(board[endR][endC].getColor() == self.getColor()):
+        if(board.getPiece(endR, endC).color == self.color):
             print("2")
             return False
         return True
