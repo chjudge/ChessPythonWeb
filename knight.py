@@ -7,8 +7,8 @@ class Knight(p):
     def canMove(self, move, board):
         endR = move.getEndR()
         endC = move.getEndC()
-        startR = self.getY()
-        startC = self.getX()
+        startR = self.get_row()
+        startC = self.get_col()
 
         # general parameter check
         # uses distance formula to check if the move is legal

@@ -8,8 +8,8 @@ class Bishop(p):
     def canMove(self, move, board):
         endR = move.getEndR()
         endC = move.getEndC()
-        startR = self.getY()
-        startC = self.getX()
+        startR = self.get_row()
+        startC = self.get_col()
         # general parameter check
         if(endR == startR or endC == startC or abs(startR - endR) != abs(startC - endC)):
             return False

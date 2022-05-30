@@ -14,22 +14,22 @@ class Pawn(p):
         if(
             isinstance(board[endR][endC], Empty) and
             self.hasMoved == False and 
-            self.getX() == endC and 
+            self.get_col() == endC and
             ((color == "white" and endR == 4) or (color == "black" and endR == 3))
         ):
             return True
         elif(
-            isinstance(board[endR][endC], Empty) and
-            self.getX() == endC and 
-            (color == "white" and endR == self.getY() - 1) or 
-            (color == "black" and endR == self.getY() + 1)):
+                isinstance(board[endR][endC], Empty) and
+                self.get_col() == endC and
+                (color == "white" and endR == self.get_row() - 1) or
+                (color == "black" and endR == self.get_row() + 1)):
             return True
         elif(
-            board[endR][endC].getColor() != "n/a" and 
-            board[endR][endC].getColor() != color and
-            (self.getX() + 1 == endC or self.getX() - 1 == endC) and 
-            ((color == "white" and endR == self.getY() - 1) or 
-            (color == "black" and endR == self.getY() + 1))
+                board[endR][endC].getColor() != "n/a" and
+                board[endR][endC].getColor() != color and
+                (self.get_col() + 1 == endC or self.get_col() - 1 == endC) and
+                ((color == "white" and endR == self.get_row() - 1) or
+                 (color == "black" and endR == self.get_row() + 1))
         ):
             return True
         #elif (en passant is true): return True

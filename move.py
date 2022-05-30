@@ -1,9 +1,9 @@
 class Move():
     def __init__(self):
-        self.startPosR = None
-        self.startPosC = None
-        self.endPosR = None
-        self.endPosC = None
+        self.start_row = None
+        self.start_col = None
+        self.end_row = None
+        self.end_col = None
 
     # Setter Method
     # moveNotation is a string that will be converted into a the move variables 
@@ -12,25 +12,14 @@ class Move():
         if not (len(moveNotation) == 5 and (moveNotation[0] and moveNotation[3]) in "abcdefgh"
                 and (moveNotation[1] and moveNotation[4]) in "12345678"):
             return False
-        self.startPosC = "abcdefgh".index(moveNotation[0])
-        self.startPosR = self.invertRowNums((int)(moveNotation[1]) - 1)
-        self.endPosC = "abcdefgh".index(moveNotation[3])
-        self.endPosR = self.invertRowNums((int)(moveNotation[4]) - 1)
+        self.start_col = "abcdefgh".index(moveNotation[0])
+        self.start_row = self.invertRowNums((int)(moveNotation[1]) - 1)
+        self.end_col = "abcdefgh".index(moveNotation[3])
+        self.end_row = self.invertRowNums((int)(moveNotation[4]) - 1)
 
     # this is needed because the board is printed with 0 at the top not 7
     def invertRowNums(self, rowVal):
         return abs(rowVal - 7)
 
 
-    # Getter Methods
-    def getStartR(self):
-        return self.startPosR
-    def getStartC(self):
-        return self.startPosC
-    def getEndR(self):
-        return self.endPosR
-    def getEndC(self):
-        return self.endPosC
 
-    
-    print("HI")

@@ -8,6 +8,8 @@ from queen import Queen
 from king import King
 # Move
 from move import Move
+# Board
+from board import Board
 # colored text for console output
 from colorama import Fore, Style
 
@@ -15,10 +17,11 @@ from colorama import Fore, Style
 class Chess:
     # Chess constructor
     def __init__(self):
-        self.board = [[Empty for col in range(8)] for row in range(8)]
-        self.fillBoard()
-        self.white_king = self.board[7][4]
-        self.black_king = self.board[0][4]
+        self.board = Board()
+        # self.board = [[Empty for col in range(8)] for row in range(8)]
+        # self.fillBoard()
+        # self.white_king = self.board[7][4]
+        # self.black_king = self.board[0][4]
         self.move = Move()
         self.whiteToMove = True
 
@@ -133,20 +136,4 @@ class Chess:
                     self.board[row][col] = Empty(row, col, "n/a")
 
     # prints out the board
-    def __str__(self) -> None:
-        print_string = "Chess Board: \n"
-        # gets the row in board
-        for rowArr in self.board:
-            for pieceIndex in range(8):
-                # sets the color for the pieces
-                if (rowArr[pieceIndex].getColor() == "black"):
-                    print_string += Fore.RED
-                elif (rowArr[pieceIndex].getColor() == "white"):
-                    print_string += Fore.BLUE
-                print_string += f"{str(rowArr[pieceIndex])}"
-                print_string += Style.RESET_ALL
-                if (pieceIndex != 7):
-                    print_string += "|"
-            if (self.board[7] != rowArr):
-                print_string += "\n___ ___ ___ ___ ___ ___ ___ ___\n"
-        return print_string
+

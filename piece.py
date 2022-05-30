@@ -1,10 +1,12 @@
 # abstraction
 from abc import ABC, abstractmethod
+
+
 class Piece(ABC):
     # constructor for abstract
-    def __init__(self, yPos, xPos, color):
-        self.yPos = yPos
-        self.xPos = xPos
+    def __init__(self, row, col, color):
+        self.row = row
+        self.col = col
         self.color = color
         self.hasMoved = False
 
@@ -19,12 +21,15 @@ class Piece(ABC):
         self.hasMoved = True
 
     # getter methods
-    def getX(self):
-        return self.xPos
-    def getY(self):
-        return self.yPos
+    def get_col(self):
+        return self.col
+
+    def get_row(self):
+        return self.row
+
     def getColor(self):
         return self.color
+
     def hasMoved(self):
         return self.hasMoved
 
