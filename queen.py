@@ -26,7 +26,7 @@ class Queen(p):
             HORIZONTAL = (endC - startC)/abs(endC - startC)
 
         for diff in range(1,abs(startR - endR)):
-            if(not isinstance(board.getPiece((int)(startR - diff * VERTICAL), (int)(startC + diff * HORIZONTAL))], Empty)):
+            if(not isinstance(board.getPiece((int)(startR - diff * VERTICAL), (int)(startC + diff * HORIZONTAL)), Empty)):
                 print("1")
                 return False
         if(board.getPiece(endR, endC).color == self.color):

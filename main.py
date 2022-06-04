@@ -2,7 +2,7 @@ from chess import Chess
 
 def main():
     chess = Chess()
-    print(chess)
+    print(chess.board.__str__())
     
     chess.gameLoop()
     print("Program Complete")

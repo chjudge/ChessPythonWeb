@@ -7,6 +7,7 @@ from rook import Rook
 from bishop import Bishop
 from queen import Queen
 from king import King
+from move import Move
 
 
 class Board:
@@ -15,34 +16,38 @@ class Board:
         self.black_pieces = []
         self.board = []
         self.create_board()
+        self.empty = Empty(-1,-1, "n/a")
+        self.en_passant = []
+        self.past_piece = None
+        self.old_move = Move()
 
     def create_board(self):
-        self.board = [[Empty for col in range(8)] for row in range(8)]
+        self.board = [[Empty(-1,-1,"n/a") for col in range(8)] for row in range(8)]
 
-        self.white_pieces.append(Rook(0, 7, "white"))
-        self.white_pieces.append(Knight(1, 7, "white"))
-        self.white_pieces.append(Bishop(2, 7, "white"))
-        self.white_pieces.append(Queen(3, 7, "white"))
-        self.white_pieces.append(King(4, 7, "white"))
-        self.white_pieces.append(Bishop(5, 7, "white"))
-        self.white_pieces.append(Knight(6, 7, "white"))
+        self.white_pieces.append(Rook(7, 0, "white"))
+        self.white_pieces.append(Knight(7, 1, "white"))
+        self.white_pieces.append(Bishop(7, 2, "white"))
+        self.white_pieces.append(Queen(7, 3, "white"))
+        self.white_pieces.append(King(7, 4, "white"))
+        self.white_pieces.append(Bishop(7, 5, "white"))
+        self.white_pieces.append(Knight(7, 6, "white"))
         self.white_pieces.append(Rook(7, 7, "white"))
         for i in range(8):
-            self.white_pieces.append(Pawn(i, 6, "white"))
+            self.white_pieces.append(Pawn(6, i, "white"))
 
         for p in self.white_pieces:
             self.board[p.row][p.col] = p
 
         self.black_pieces.append(Rook(0, 0, "black"))
-        self.black_pieces.append(Knight(1, 0, "black"))
-        self.black_pieces.append(Bishop(2, 0, "black"))
-        self.black_pieces.append(Queen(3, 0, "black"))
-        self.black_pieces.append(King(4, 0, "black"))
-        self.black_pieces.append(Bishop(5, 0, "black"))
-        self.black_pieces.append(Knight(6, 0, "black"))
-        self.black_pieces.append(Rook(7, 0, "black"))
+        self.black_pieces.append(Knight(0, 1, "black"))
+        self.black_pieces.append(Bishop(0, 2, "black"))
+        self.black_pieces.append(Queen(0, 3, "black"))
+        self.black_pieces.append(King(0, 4, "black"))
+        self.black_pieces.append(Bishop(0, 5, "black"))
+        self.black_pieces.append(Knight(0, 6, "black"))
+        self.black_pieces.append(Rook(0, 7, "black"))
         for i in range(8):
-            self.black_pieces.append(Pawn(i, 1, "black"))
+            self.black_pieces.append(Pawn(1, i, "black"))
 
         for p in self.black_pieces:
             self.board[p.row][p.col] = p
@@ -50,6 +55,62 @@ class Board:
     # returns the piece at a specific location 
     def getPiece(self, row, col):
         return self.board[row][col]
+
+    # moves a piece to the end location and sets the old square empty
+    def movePiece(self, move, en_p):
+        if(en_p):
+            if(self.board[move.start_row][move.start_col].color == "white"):
+                self.board[move.end_row + 1][move.end_col] = self.empty
+            else:
+                self.board[move.end_row - 1][move.end_col] = self.empty
+        self.board[move.start_row][move.start_col].pieceMove(move.end_row,move.end_col)
+        self.board[move.end_row][move.end_col] = self.board[move.start_row][move.start_col]
+        self.board[move.start_row][move.start_col] = self.empty
+
+    # when castling is happening
+    def castle(self, castle_loc):
+        if(castle_loc == "white king's side"):
+            self.board[7][5] = self.board[7][7]
+            self.board[7][7] = self.empty
+        elif(castle_loc == "white queen's side"):
+            self.board[7][3] = self.board[7][0]
+            self.board[7][0] = self.empty
+        elif(castle_loc == "black king's side"):
+            self.board[0][5] = self.board[0][7]
+            self.board[0][7] = self.empty
+        elif(castle_loc == "black queen's side"):
+            self.board[0][3] = self.board[0][0]
+            self.board[0][0] = self.empty
+
+    # sets pieces and squares in case undo is needed
+    def setUndo(self, move):
+        self.old_move.defineMove(move.start_row, move.start_col, move.end_row, move.end_col)
+        self.past_piece = self.board[move.end_row][move.end_col]
+
+
+    # if a move wasn't legal (leaving the king in check) then
+    def undo(self, en_passant, castle):
+        if(en_passant):
+            if(self.color == "white"):
+                self.board[self.old_move.end_row + 1][self.old_move.end_col] = self.past_piece
+            else:
+                self.board[self.old_move.end_row - 1][self.old_move.end_col] = self.past_piece
+            print("undo")
+        else:
+            self.board[self.old_move.start_row][self.old_move.start_col] = self.board[self.old_move.end_row][self.old_move.end_col]
+            self.board[self.old_move.end_row][self.old_move.end_col] = self.past_piece
+            # if(castle == "white king's side"):
+            #     self.board[7][7] = self.board[7][5]
+            #     self.board[7][5] = self.empty
+            # elif(castle == "white queen's side"):
+            #     self.board[7][0] = self.board[7][3]
+            #     self.board[7][3] = self.empty
+            # elif(castle == "black king's side"):
+            #     self.board[0][7] = self.board[0][5]
+            #     self.board[0][5] = self.empty
+            # elif(castle == "black queen's side"):
+            #     self.board[0][0] = self.board[0][3]
+            #     self.board[0][3] = self.empty
 
     def __str__(self) -> None:
         print_string = "Chess Board: \n"

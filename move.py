@@ -17,6 +17,13 @@ class Move():
         self.end_col = "abcdefgh".index(moveNotation[3])
         self.end_row = self.invertRowNums((int)(moveNotation[4]) - 1)
 
+    # this is used when the program needs to define a move object
+    def defineMove(self, rs, cs, re, ce):
+        self.start_row = rs
+        self.start_col = cs
+        self.end_row = re
+        self.end_col = ce    
+
     # this is needed because the board is printed with 0 at the top not 7
     def invertRowNums(self, rowVal):
         return abs(rowVal - 7)

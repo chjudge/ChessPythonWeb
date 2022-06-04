@@ -12,6 +12,7 @@ from move import Move
 from board import Board
 # colored text for console output
 from colorama import Fore, Style
+#GUI
 
 
 class Chess:
@@ -20,6 +21,7 @@ class Chess:
         self.board = Board()
         self.move = Move()
         self.whiteToMove = True
+        self.castling = False
 
     # the man loop where the game happens
     def gameLoop(self) -> None:
@@ -27,9 +29,6 @@ class Chess:
         while True:  # input("Would you like to move? (y/n)\n") == "y"
 
             # GET USER INPUT--------------------------------------------------------------------
-
-            # while loop double checks that the input is valid for chess notation
-            # (valid move is checked elsewhere)
 
             moveInput = input("Please input your move with the following notation: " +
                               "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n").lower()
@@ -52,84 +51,45 @@ class Chess:
                     self.board.getPiece(self.move.start_row, self.move.start_col).color == "black")
             ):
                 validMove = self.board.getPiece(self.move.start_row,self.move.start_col).canMove(self.move, self.board)
+                self.board.setUndo(self.move)
+
             else:
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
                 continue
 
             # MAKE THE "MOVE" CHANGE------------------------------------------------------------
             if validMove:
-                self.board.getPiece(self.move.end_row,self.move.end_col) = (
-                    type(self.board.getPiece(self.move.start_row,self.move.start_col))
-                    (self.move.end_row, self.move.end_col,
-                     self.board.getPiece(self.move.start_row,self.move.start_col).color)
-                )
-                self.board.getPiece(self.move.end_row,self.move.end_col).moved()
+                self.board.movePiece(self.move, len(self.board.en_passant) != 0)
 
-                self.board.getPiece(self.move.start_row,self.move.start_col) = (
-                    Empty(self.move.start_row, self.move.start_col, "n/a")
-                )
-                if isinstance(self.board.getPiece(self.move.end_row,self.move.end_col), King):
-                    if self.whiteToMove:
-                        self.white_king = self.board.getPiece(self.move.end_row,self.move.end_col)
-                    else:
-                        self.black_king = self.board.getPiece(self.move.end_row,self.move.end_col)
-                self.whiteToMove = not self.whiteToMove
-                # print(f"Color at new square is: {self.board.getPiece(self.move.end_row,self.move.end_col).color}")
+                if(self.whiteToMove):
+                    validMove = not self.board.white_pieces[4].kingCheck(
+                        self.board.white_pieces[4].row, self.board.white_pieces[4].col, self.board)
+                else:
+                    validMove = not self.board.black_pieces[4].kingCheck(
+                        self.board.black_pieces[4].row, self.board.black_pieces[4].col, self.board)
+                if(validMove): 
+                    # resets en Passant values
+                    if(len(self.board.en_passant) != 0):
+                        if((self.whiteToMove and self.board.en_passant[0].color == "white") or
+                            (not self.whiteToMove and self.board.en_passant[0].color == "black")):
+                            self.board.en_passant.clear()
+                    self.whiteToMove = not self.whiteToMove
+                else:
+                    self.board.undo(len(self.board.en_passant) != 0)
+                    print(Fore.RED + "King is in Check!" + Style.RESET_ALL)
             else:
                 print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
+
+            # undoes the move if it was illegal
+                if(validMove):
+                    if(self.whiteToMove):
+                        validMove = not self.board.white_pieces[4].kingCheck(
+                            self.board.white_pieces[4].row, self.board.white_pieces[4].col, self.board)
+                    else:
+                        validMove = not self.board.black_pieces[4].kingCheck(
+                            self.board.black_pieces[4].row, self.board.black_pieces[4].col, self.board)
+
+
             # REPEAT------------------------------------------------------------------------------
-            print(self.__str__())
-
-    def in_check(self) -> bool:
-        # check if the king is in check
-        if self.whiteToMove:
-            king = self.white_king
-        else:
-            king = self.black_king
-        for row in range(8):
-            for col in range(8):
-                if (
-                        (self.whiteToMove and self.board[row][col].color == "black")
-                        or
-                        (not self.whiteToMove and self.board[row][col].color == "white")
-                ):
-                    if self.board[row][col].canMove(Move(king.row, king.col, row, col), self.board):
-                        return True
-        return False
-
-    # # sets the board up for the beginning of the game
-    # def fillBoard(self) -> None:
-    #     for row in range(8):
-    #         for col in range(8):
-    #             # all black pieces
-    #             if (row == 0 and (col == 0 or col == 7)):
-    #                 self.board[row][col] = Rook(row, col, "black")
-    #             elif (row == 0 and (col == 1 or col == 6)):
-    #                 self.board[row][col] = Knight(row, col, "black")
-    #             elif (row == 0 and (col == 2 or col == 5)):
-    #                 self.board[row][col] = Bishop(row, col, "black")
-    #             elif (row == 0 and col == 3):
-    #                 self.board[row][col] = Queen(row, col, "black")
-    #             elif (row == 0 and col == 4):
-    #                 self.board[row][col] = King(row, col, "black")
-    #             elif (row == 1):
-    #                 self.board[row][col] = Pawn(row, col, "black")
-    #             # all white pieces
-    #             elif (row == 7 and (col == 0 or col == 7)):
-    #                 self.board[row][col] = Rook(row, col, "white")
-    #             elif (row == 7 and (col == 1 or col == 6)):
-    #                 self.board[row][col] = Knight(row, col, "white")
-    #             elif (row == 7 and (col == 2 or col == 5)):
-    #                 self.board[row][col] = Bishop(row, col, "white")
-    #             elif (row == 7 and col == 3):
-    #                 self.board[row][col] = Queen(row, col, "white")
-    #             elif (row == 7 and col == 4):
-    #                 self.board[row][col] = King(row, col, "white")
-    #             elif (row == 6):
-    #                 self.board[row][col] = Pawn(row, col, "white")
-    #             # all empty squares
-    #             else:
-    #                 self.board[row][col] = Empty(row, col, "n/a")
-
-    # prints out the board
+            print(self.board.__str__())
 
