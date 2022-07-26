@@ -15,13 +15,6 @@ class Chess:
         self.board = Board()
         self.move = Move()
         self.whiteToMove = True
-        self.castling = False
-
-    # determine if the player's king is in check
-    def in_check(self):
-        king = self.board.white_pieces[4] if self.whiteToMove else self.board.black_pieces[4]
-
-        return king.king_check(king.row, king.col, self.board)
 
     # the main loop where the game happens
     def game_loop(self) -> None:
@@ -57,19 +50,11 @@ class Chess:
                 continue
 
             # MAKE THE "MOVE" CHANGE------------------------------------------------------------
-            self.board.move_piece(self.move)
+            success = self.board.move_piece(self.move, self.whiteToMove)
 
-            # prevent moving into check
-            if self.in_check():
-                self.board.undo()
+            if success is False:
                 print(Fore.RED + "King is in Check!" + Style.RESET_ALL)
                 continue
-
-            # reset en Passant values
-            if len(self.board.en_passant) != 0:
-                if ((self.whiteToMove and self.board.en_passant[0].color == "white") or
-                        (not self.whiteToMove and self.board.en_passant[0].color == "black")):
-                    self.board.en_passant.clear()
 
             # REPEAT------------------------------------------------------------------------------
             # change players turn
