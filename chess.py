@@ -25,7 +25,7 @@ class Chess:
 
             move_input = input("Please input your move with the following notation: " +
                                "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n").strip().lower()
-            
+
             if self.move.set_move(move_input) is False:
                 print(Fore.RED + "Invalid input!" + Style.RESET_ALL)
                 continue
@@ -42,8 +42,6 @@ class Chess:
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
                 continue
 
-
-
             # MAKE THE "MOVE" CHANGE------------------------------------------------------------
             success = self.board.move_piece(self.move, self.whiteToMove)
 
@@ -59,4 +57,6 @@ class Chess:
             # REPEAT------------------------------------------------------------------------------
             # change players turn
             self.whiteToMove = not self.whiteToMove
+            # TODO: check if the game is over
+            # TODO: pawn promotion
             print(self.board.__str__())
