@@ -64,24 +64,29 @@ class Board:
 
     # moves a piece to the end location and sets the old square empty
     def move_piece(self, move, white_turn):
+        self.set_undo(move)
         if len(self.en_passant) != 0:
             if self.board[move.start_row][move.start_col].color == "white":
                 self.board[move.end_row + 1][move.end_col] = self.empty
             else:
                 self.board[move.end_row - 1][move.end_col] = self.empty
+
+        if not self.board[move.start_row][move.start_col].can_move(move, self):
+            return 1
+
         self.board[move.start_row][move.start_col].piece_move(move.end_row, move.end_col)
         self.board[move.end_row][move.end_col] = self.board[move.start_row][move.start_col]
         self.board[move.start_row][move.start_col] = self.empty
 
         if self.in_check(white_turn):
             self.undo()
-            return False
+            return 2
 
         if len(self.en_passant) != 0:
             if (white_turn and self.en_passant[0].color == "white")\
                     or (not white_turn and self.en_passant[0].color == "black"):
                 self.en_passant.clear()
-        return True
+        return 0
 
     # when castling is happening
     def castle(self, castle_loc):

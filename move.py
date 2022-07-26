@@ -1,3 +1,4 @@
+# this is needed because the board is printed with 0 at the top not 7
 def invert_row_nums(row_val):
     return abs(row_val - 7)
 
@@ -27,9 +28,3 @@ class Move:
         self.start_col = cs
         self.end_row = re
         self.end_col = ce    
-
-    # this is needed because the board is printed with 0 at the top not 7
-
-
-
-

@@ -42,17 +42,17 @@ class Chess:
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
                 continue
 
-            self.board.set_undo(self.move)
 
-            # Check if the piece can move to the end location
-            if not piece.can_move(self.move, self.board):
-                print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
-                continue
 
             # MAKE THE "MOVE" CHANGE------------------------------------------------------------
             success = self.board.move_piece(self.move, self.whiteToMove)
 
-            if success is False:
+            # Check if the piece can move to the end location
+            if success == 1:
+                print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
+                continue
+
+            if success == 2:
                 print(Fore.RED + "King is in Check!" + Style.RESET_ALL)
                 continue
 
