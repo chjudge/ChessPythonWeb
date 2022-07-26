@@ -90,7 +90,7 @@ class Board:
     # if a move wasn't legal (leaving the king in check) then
     def undo(self):
         if len(self.en_passant) != 0:
-            if self.color == "white":
+            if self.past_piece.color == "white":
                 self.board[self.old_move.end_row + 1][self.old_move.end_col] = self.past_piece
             else:
                 self.board[self.old_move.end_row - 1][self.old_move.end_col] = self.past_piece
