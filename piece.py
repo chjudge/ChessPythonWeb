@@ -13,15 +13,15 @@ class Piece(ABC):
     # takes in argument move (which has start and end position)
     # checks to see if the piece can move
     @abstractmethod
-    def canMove(self, move, board):
+    def can_move(self, move, board):
         pass
 
     # when a piece has moved
     def moved(self) -> None:
         self.hasMoved = True
 
-    #changes the row & col for the piece
-    def pieceMove(self, row, col):
+    # changes the row & col for the piece
+    def piece_move(self, row, col):
         self.row = row
         self.col = col
 

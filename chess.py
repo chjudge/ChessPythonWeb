@@ -1,18 +1,12 @@
-# Pieces
-from empty import Empty
-from pawn import Pawn
-from knight import Knight
-from rook import Rook
-from bishop import Bishop
-from queen import Queen
-from king import King
 # Move
 from move import Move
 # Board
 from board import Board
 # colored text for console output
 from colorama import Fore, Style
-#GUI
+
+
+# GUI
 
 
 class Chess:
@@ -23,73 +17,61 @@ class Chess:
         self.whiteToMove = True
         self.castling = False
 
-    # the man loop where the game happens
-    def gameLoop(self) -> None:
+    # determine if the player's king is in check
+    def in_check(self):
+        king = self.board.white_pieces[4] if self.whiteToMove else self.board.black_pieces[4]
+
+        return king.king_check(king.row, king.col, self.board)
+
+    # the main loop where the game happens
+    def game_loop(self) -> None:
         # loop represents the overall game loop
         while True:  # input("Would you like to move? (y/n)\n") == "y"
 
             # GET USER INPUT--------------------------------------------------------------------
 
-            moveInput = input("Please input your move with the following notation: " +
-                              "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n").lower()
-            move_validate = self.move.setMove(moveInput)
-            if move_validate is False:
+            move_input = input("Please input your move with the following notation: " +
+                               "[pieceLocation]-[pieceDestination] (Example: a2-a3)\n").strip().lower()
+            
+            if self.move.set_move(move_input) is False:
                 print(Fore.RED + "Invalid input!" + Style.RESET_ALL)
                 continue
 
-            print(f"Your movement of {moveInput} is (Col,Row): " +
-                  f" ({self.move.start_col},{self.move.start_row})" +
-                  f" -> ({self.move.end_col},{self.move.end_row})\n")
+            # print(f"Your movement of {move_input} is (Col,Row): " +
+            #       f" ({self.move.start_col},{self.move.start_row})" +
+            #       f" -> ({self.move.end_col},{self.move.end_row})\n")
+
+            piece = self.board.get_piece(self.move.start_row, self.move.start_col)
 
             # CHECK USER INPUT IS VALID----------------------------------------------------------
-            validMove = False
-            if (
-                    (self.whiteToMove and 
-                    self.board.getPiece(self.move.start_row, self.move.start_col).color == "white")
-                    or
-                    (not self.whiteToMove and 
-                    self.board.getPiece(self.move.start_row, self.move.start_col).color == "black")
-            ):
-                validMove = self.board.getPiece(self.move.start_row,self.move.start_col).canMove(self.move, self.board)
-                self.board.setUndo(self.move)
-
-            else:
+            # check if the piece is the player's color
+            if (self.whiteToMove and piece.color == "black") or (self.whiteToMove is False and piece.color == "white"):
                 print(Fore.RED + "Wrong Color!" + Style.RESET_ALL)
                 continue
 
-            # MAKE THE "MOVE" CHANGE------------------------------------------------------------
-            if validMove:
-                self.board.movePiece(self.move, len(self.board.en_passant) != 0)
+            self.board.set_undo(self.move)
 
-                if(self.whiteToMove):
-                    validMove = not self.board.white_pieces[4].kingCheck(
-                        self.board.white_pieces[4].row, self.board.white_pieces[4].col, self.board)
-                else:
-                    validMove = not self.board.black_pieces[4].kingCheck(
-                        self.board.black_pieces[4].row, self.board.black_pieces[4].col, self.board)
-                if(validMove): 
-                    # resets en Passant values
-                    if(len(self.board.en_passant) != 0):
-                        if((self.whiteToMove and self.board.en_passant[0].color == "white") or
-                            (not self.whiteToMove and self.board.en_passant[0].color == "black")):
-                            self.board.en_passant.clear()
-                    self.whiteToMove = not self.whiteToMove
-                else:
-                    self.board.undo(len(self.board.en_passant) != 0)
-                    print(Fore.RED + "King is in Check!" + Style.RESET_ALL)
-            else:
+            # Check if the piece can move to the end location
+            if not piece.can_move(self.move, self.board):
                 print(Fore.RED + "That was an invalid move, please make a legal move" + Style.RESET_ALL)
+                continue
 
-            # undoes the move if it was illegal
-                if(validMove):
-                    if(self.whiteToMove):
-                        validMove = not self.board.white_pieces[4].kingCheck(
-                            self.board.white_pieces[4].row, self.board.white_pieces[4].col, self.board)
-                    else:
-                        validMove = not self.board.black_pieces[4].kingCheck(
-                            self.board.black_pieces[4].row, self.board.black_pieces[4].col, self.board)
+            # MAKE THE "MOVE" CHANGE------------------------------------------------------------
+            self.board.move_piece(self.move)
 
+            # prevent moving into check
+            if self.in_check():
+                self.board.undo()
+                print(Fore.RED + "King is in Check!" + Style.RESET_ALL)
+                continue
+
+            # reset en Passant values
+            if len(self.board.en_passant) != 0:
+                if ((self.whiteToMove and self.board.en_passant[0].color == "white") or
+                        (not self.whiteToMove and self.board.en_passant[0].color == "black")):
+                    self.board.en_passant.clear()
 
             # REPEAT------------------------------------------------------------------------------
+            # change players turn
+            self.whiteToMove = not self.whiteToMove
             print(self.board.__str__())
-

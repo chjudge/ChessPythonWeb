@@ -1,10 +1,12 @@
 from piece import Piece as p
 import math
+
+
 class Knight(p):
-    # Constuctor defined in parents
+    # Constructor defined in parents
 
     # defining the canMove method: involves defining how the piece moves
-    def canMove(self, move, board):
+    def can_move(self, move, board):
         endR = move.end_row
         endC = move.end_col
         startR = self.row
@@ -12,11 +14,11 @@ class Knight(p):
 
         # general parameter check
         # uses distance formula to check if the move is legal
-        if(endR == startR and endC == startC):
+        if endR == startR and endC == startC:
             return False
 
-        if(math.sqrt(math.pow(startR - endR,2) + math.pow(startC - endC,2)) != math.sqrt(5) or 
-            board.getPiece(endR, endC).color == self.color):
+        if (math.sqrt(math.pow(startR - endR, 2) + math.pow(startC - endC, 2)) != math.sqrt(5) or
+                board.get_piece(endR, endC).color == self.color):
             return False
 
         return True
