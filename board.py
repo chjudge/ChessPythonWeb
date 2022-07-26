@@ -1,12 +1,12 @@
 from colorama import Fore, Style
 
-from empty import Empty
-from pawn import Pawn
-from knight import Knight
-from rook import Rook
-from bishop import Bishop
-from queen import Queen
-from king import King
+from pieces.empty import Empty
+from pieces.pawn import Pawn
+from pieces.knight import Knight
+from pieces.rook import Rook
+from pieces.bishop import Bishop
+from pieces.queen import Queen
+from pieces.king import King
 from move import Move
 
 

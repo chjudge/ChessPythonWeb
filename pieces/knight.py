@@ -1,8 +1,8 @@
-from piece import Piece as p
+from pieces.piece import Piece
 import math
 
 
-class Knight(p):
+class Knight(Piece):
     # Constructor defined in parents
 
     # defining the canMove method: involves defining how the piece moves

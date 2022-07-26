@@ -1,11 +1,11 @@
-from piece import Piece as p
+from pieces.piece import Piece
 import math
 from move import Move
-from rook import Rook
-from empty import Empty
+from pieces.rook import Rook
+from pieces.empty import Empty
 
 
-class King(p):
+class King(Piece):
     # Constructor defined in parents
 
     # defining the canMove method: involves defining how the piece moves

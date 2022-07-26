@@ -1,8 +1,8 @@
-from piece import Piece as p
-from empty import Empty
+from pieces.piece import Piece
+from pieces.empty import Empty
 
 
-class Queen(p):
+class Queen(Piece):
     # Constructor defined in parents
 
     # defining the canMove method: involves defining how the piece moves

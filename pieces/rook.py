@@ -1,8 +1,8 @@
-from piece import Piece as p
-from empty import Empty
+from pieces.piece import Piece
+from pieces.empty import Empty
 
 
-class Rook(p):
+class Rook(Piece):
     # Constructor defined in parents
 
     # defining the canMove method: involves defining how the piece moves

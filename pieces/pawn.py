@@ -1,8 +1,8 @@
-from piece import Piece as p
-from empty import Empty
+from pieces.piece import Piece
+from pieces.empty import Empty
 
 
-class Pawn(p):
+class Pawn(Piece):
     # Constructor defined in parents
     def __init__(self, row, col, color):
         super().__init__(row, col, color)

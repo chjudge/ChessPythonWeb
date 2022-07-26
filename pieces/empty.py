@@ -1,7 +1,7 @@
-from piece import Piece as p
+from pieces.piece import Piece
 
 
-class Empty(p):
+class Empty(Piece):
     # Constructor defined in parents
     # def __init__(self, xpos, ypos, color):
     #     p.__init__(self, xpos, ypos, color)
