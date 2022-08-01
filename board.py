@@ -1,5 +1,5 @@
+import enum
 from colorama import Fore, Style
-
 from pieces.empty import Empty
 from pieces.pawn import Pawn
 from pieces.knight import Knight
@@ -8,6 +8,17 @@ from pieces.bishop import Bishop
 from pieces.queen import Queen
 from pieces.king import King
 from move import Move
+
+
+class Result(enum.IntEnum):
+    """
+    Enum for move results
+    """
+    OK = 0
+    ILLEGAL = 1
+    CHECK = 2
+    PROMOTE = 3
+    CHECKMATE = 4
 
 
 class Board:
@@ -72,20 +83,30 @@ class Board:
                 self.board[move.end_row - 1][move.end_col] = self.empty
 
         if not self.board[move.start_row][move.start_col].can_move(move, self):
-            return 1
+            return Result.ILLEGAL
 
         self.board[move.start_row][move.start_col].piece_move(move.end_row, move.end_col)
         self.board[move.end_row][move.end_col] = self.board[move.start_row][move.start_col]
         self.board[move.start_row][move.start_col] = self.empty
 
+        # moving into check
         if self.in_check(white_turn):
             self.undo()
-            return 2
+            return Result.CHECK
 
         if len(self.en_passant) != 0:
             if (white_turn and self.en_passant[0].color == "white")\
                     or (not white_turn and self.en_passant[0].color == "black"):
                 self.en_passant.clear()
+
+        # pawn promotion
+        if isinstance(self.get_piece(move.end_row, move.end_col), Pawn) and \
+                ((white_turn and move.end_row == 0) or (not white_turn and move.end_row == 7)):
+            print(f'promte the pawn {move.end_row} {move.end_col}')
+            return Result.PROMOTE
+
+        # checkmate
+
         return 0
 
     # when castling is happening
