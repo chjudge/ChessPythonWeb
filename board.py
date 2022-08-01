@@ -19,6 +19,7 @@ class Result(enum.IntEnum):
     CHECK = 2
     PROMOTE = 3
     CHECKMATE = 4
+    STALEMATE = 5
 
 
 class Board:
