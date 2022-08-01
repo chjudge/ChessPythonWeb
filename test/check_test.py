@@ -16,5 +16,5 @@ def testBishopCheck():
     # move.define_move(1, 6, 5, 2)
     # board.move_piece(move, True)
     print(board)
-    assert board.get_piece(5, 8).king_check(5, 8, board)
+    assert board.get_piece(5, 7).vulnerable(5, 7, board)
 

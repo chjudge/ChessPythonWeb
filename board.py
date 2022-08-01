@@ -3,6 +3,7 @@ from colorama import Fore, Style
 from pieces.empty import Empty
 from pieces.pawn import Pawn
 from pieces.knight import Knight
+from pieces.piece import Piece
 from pieces.rook import Rook
 from pieces.bishop import Bishop
 from pieces.queen import Queen
@@ -65,7 +66,7 @@ class Board:
             self.board[p.row][p.col] = p
 
     # returns the piece at a specific location 
-    def get_piece(self, row, col):
+    def get_piece(self, row, col) -> Piece:
         return self.board[row][col]
 
     # determine if the player's king is in check
