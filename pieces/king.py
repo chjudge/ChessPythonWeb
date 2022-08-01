@@ -61,20 +61,14 @@ class King(Piece):
     def king_check(self, row, col, board):
         move = Move()
         is_in_check = False
-        if self.color == "white":
-            for piece in board.black_pieces:
-                move.define_move(piece.row, piece.col, row, col)
-                is_in_check = piece.can_move(move, board)
-                if is_in_check:
-                    print("-------------------------------")
-                    break
-        else:
-            for piece in board.white_pieces:
-                move.define_move(piece.row, piece.col, row, col)
-                is_in_check = piece.can_move(move, board)
-                if is_in_check:
-                    print("-----------------------------------")
-                    break
+        pieces = board.black_pieces if self.color == "white" else board.white_pieces
+        for piece in pieces:
+            move.define_move(piece.row, piece.col, row, col)
+            is_in_check = piece.can_move(move, board)
+            if is_in_check:
+                print("-------------------------------")
+                print(f'check from {piece}')
+                break
         print(f"is {self.color} king in check: {is_in_check}")
         return is_in_check
 

@@ -23,7 +23,6 @@ def test_pawn_move():
 
 
 def test_white_move_en_passant():
-    pass
     board = Board()
     move = Move()
     move.define_move(6, 2, 4, 2)
@@ -83,3 +82,19 @@ def test_queen_side_castle():
     assert isinstance(board.get_piece(7, 3), Rook)
     assert isinstance(board.get_piece(7, 2), King)
     assert board.get_piece(7, 5).color == "white"
+
+
+def test_pawn_capture():
+    board = Board()
+    move = Move()
+    move.define_move(1, 1, 3, 1)
+    board.move_piece(move, True)
+    move.define_move(6, 1, 4, 1)
+    board.move_piece(move, False)
+    print(board)
+    move.define_move(3, 1, 4, 1)
+    success = board.move_piece(move, True)
+    print(board)
+    assert success == 1
+    assert isinstance(board.get_piece(4, 1), Pawn)
+    assert board.get_piece(4, 1).color == "white"

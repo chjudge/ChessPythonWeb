@@ -49,10 +49,8 @@ class Pawn(Piece):
             self.en_passant_move(endR, endC, board)
             return True
         elif (
-                isinstance(board.get_piece(endR, endC), Empty) and
-                self.col == endC and
-                (color == "white" and endR == self.row - 1) or
-                (color == "black" and endR == self.row + 1)):
+                isinstance(board.get_piece(endR, endC), Empty) and self.col == endC and
+                ((color == "white" and endR == self.row - 1) or (color == "black" and endR == self.row + 1))):
             return True
         elif (
                 board.get_piece(endR, endC).color != "n/a" and
