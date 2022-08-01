@@ -16,7 +16,7 @@ def testBishopCheck():
     move.define_move(7, 5, 3, 1)
     board.move_piece(move, True)
     print(board)
-    assert board.get_piece(0, 4).king_check(0, 4, board)
+    assert board.get_piece(0, 4).can_move(0, 4, board)
 
 def testRookCheck():
     board = Board()

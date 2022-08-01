@@ -28,10 +28,8 @@ class Queen(Piece):
 
         for diff in range(1, abs(startR - endR)):
             if not isinstance(board.get_piece(int(startR - diff * VERTICAL), int(startC + diff * HORIZONTAL)), Empty):
-                print("1")
                 return False
         if board.get_piece(endR, endC).color == self.color:
-            print("2")
             return False
         return True
 

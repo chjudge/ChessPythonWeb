@@ -3,6 +3,7 @@ from colorama import Fore, Style
 from pieces.empty import Empty
 from pieces.pawn import Pawn
 from pieces.knight import Knight
+from pieces.piece import Piece
 from pieces.rook import Rook
 from pieces.bishop import Bishop
 from pieces.queen import Queen
@@ -65,14 +66,59 @@ class Board:
             self.board[p.row][p.col] = p
 
     # returns the piece at a specific location 
-    def get_piece(self, row, col):
+    def get_piece(self, row, col) -> Piece:
         return self.board[row][col]
 
     # determine if the player's king is in check
     def in_check(self, white_turn):
         king = self.white_pieces[4] if white_turn else self.black_pieces[4]
 
-        return king.king_check(king.row, king.col, self)
+        return king.vulnerable(king.row, king.col, self)
+
+    def in_checkmate(self, white_turn):
+        checking_piece = self.in_check(white_turn)
+        if checking_piece:
+            king = self.white_pieces[4] if white_turn else self.black_pieces[4]
+            # check if the king can move to a square that is not in check
+            for i in range(-1, 1):
+                for j in range(-1, 1):
+                    if i == 0 and j == 0:
+                        continue
+                    if king.row + i < 0 or king.row + i > 7 or king.col + j < 0 or king.col + j > 7:
+                        continue
+                    if king.can_move(Move(king.row, king.col, king.row + i, king.col + j), self):
+                        print(f'king can move to {king.row + i},{king.col + j}')
+                        return False
+            # check if the player can take the piece checking the king
+            for p in self.white_pieces if white_turn else self.black_pieces:
+                if p.can_move(Move(p.row, p.col, checking_piece.row, checking_piece.col), self):
+                    print(f'{p} {p.row},{p.col}')
+                    return False
+                if not isinstance(checking_piece, Knight):
+                    if king.row == checking_piece.row:
+                        for c in range(1, abs(king.col - checking_piece.col)):
+                            if p.can_move(Move(p.row, p.col, king.row,
+                                               king.col + c * (1 if king.col < checking_piece.col else -1)), self):
+                                print(f'{p} {p.row},{p.col}')
+                                return False
+                    elif king.col == checking_piece.col:
+                        for r in range(1, abs(king.row - checking_piece.row)):
+                            if p.can_move(
+                                    Move(p.row, p.col, king.row + r * (1 if king.row < checking_piece.row else -1),
+                                         king.col), self):
+                                print(f'{p} {p.row},{p.col}')
+                                return False
+                    else:
+                        for r in range(1, abs(king.row - checking_piece.row)):
+                            for c in range(1, abs(king.col - checking_piece.col)):
+                                if r == c and p.can_move(
+                                        Move(p.row, p.col, king.row + r * (1 if king.row < checking_piece.row else -1),
+                                             king.col + c * (1 if king.col < checking_piece.col else -1)), self):
+                                    print(f'{p} {p.row},{p.col}')
+                                    return False
+            return True
+
+        return False
 
     # moves a piece to the end location and sets the old square empty
     def move_piece(self, move, white_turn):
@@ -96,17 +142,18 @@ class Board:
             return Result.CHECK
 
         if len(self.en_passant) != 0:
-            if (white_turn and self.en_passant[0].color == "white")\
+            if (white_turn and self.en_passant[0].color == "white") \
                     or (not white_turn and self.en_passant[0].color == "black"):
                 self.en_passant.clear()
 
         # pawn promotion
         if isinstance(self.get_piece(move.end_row, move.end_col), Pawn) and \
                 ((white_turn and move.end_row == 0) or (not white_turn and move.end_row == 7)):
-            print(f'promte the pawn {move.end_row} {move.end_col}')
             return Result.PROMOTE
 
-        # checkmate
+        # checkmate (check the pieces of the other player)
+        if self.in_checkmate(not white_turn):
+            return Result.CHECKMATE
 
         return 0
 
