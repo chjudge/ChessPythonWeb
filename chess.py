@@ -80,3 +80,6 @@ class Chess:
                     self.promote_pawn(piece)
                     self.whiteToMove = not self.whiteToMove
                     print(self.board.__str__())
+                case Result.CHECKMATE:
+                    print(Fore.RED + "Checkmate! " + "White wins!" if self.whiteToMove else "Black wins!" + Style.RESET_ALL)
+                    break

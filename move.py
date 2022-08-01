@@ -4,11 +4,11 @@ def invert_row_nums(row_val):
 
 
 class Move:
-    def __init__(self):
-        self.start_row = None
-        self.start_col = None
-        self.end_row = None
-        self.end_col = None
+    def __init__(self, start_row=None, start_col=None, end_row=None, end_col=None):
+        self.start_row = start_row
+        self.start_col = start_col
+        self.end_row = end_row
+        self.end_col = end_col
 
     # Setter Method
     # moveNotation is a string that will be converted into the move variables

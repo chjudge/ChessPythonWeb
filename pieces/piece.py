@@ -1,6 +1,8 @@
 # abstraction
 from abc import ABC, abstractmethod
 
+from move import Move
+
 
 class Piece(ABC):
     # constructor for abstract
@@ -24,6 +26,19 @@ class Piece(ABC):
     def piece_move(self, row, col):
         self.row = row
         self.col = col
+
+    def vulnerable(self, row, col, board):
+        move = Move()
+        is_in_check = False
+        checking = None
+        pieces = board.black_pieces if self.color == "white" else board.white_pieces
+        for piece in pieces:
+            move.define_move(piece.row, piece.col, row, col)
+            is_in_check = piece.can_move(move, board)
+            if is_in_check:
+                checking = piece
+                break
+        return checking
 
     # toString method (is abstract)
     @abstractmethod
