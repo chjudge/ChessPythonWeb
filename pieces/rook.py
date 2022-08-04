@@ -24,7 +24,7 @@ class Rook(Piece):
             VERTICAL = (startR - endR) / abs(endR - startR)
         else:
             HORIZONTAL = (endC - startC) / abs(endC - startC)
-        for diff in range(1, abs(startR - endR)):
+        for diff in range(1, abs(startR - endR) + abs(startC - endC)):
             if not isinstance(board.get_piece(int(startR - diff * VERTICAL), int(startC + diff * HORIZONTAL)), Empty):
                 return False
         if board.get_piece(endR, endC).color == self.color:
