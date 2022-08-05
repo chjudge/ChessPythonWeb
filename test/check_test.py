@@ -6,7 +6,8 @@ from pieces.king import King
 from pieces.pawn import Pawn
 from pieces.queen import Queen
 
-def testBishopCheck():
+
+def test_bishop_check():
     board = Board()
     move = Move()
     move.define_move(6, 4, 4, 4)
@@ -19,7 +20,8 @@ def testBishopCheck():
     assert board.in_check(False)
     # assert board.get_piece(0, 4).can_move(0, 4, board)
 
-def testRookCheck():
+
+def test_rook_check():
     board = Board()
     move = Move()
     move.define_move(6, 0, 4, 0)
@@ -33,7 +35,8 @@ def testRookCheck():
     print(board)
     assert board.in_check(False)
 
-def testKnightCheck():
+
+def test_knight_check():
     board = Board()
     move = Move()
     move.define_move(7, 1, 5, 2)
@@ -45,7 +48,8 @@ def testKnightCheck():
     print(board)
     assert board.in_check(False)
 
-def testQueenCheck():
+
+def test_queen_check():
     board = Board()
     move = Move()
     move.define_move(6, 4, 5, 4)
@@ -64,7 +68,8 @@ def testQueenCheck():
     print(f"{board.in_check(False)} is the state of board for check")
     assert board.in_check(False) == None
 
-def testCheckmate1():
+
+def test_checkmate1():
     board = Board()
     move = Move()
     move.define_move(6, 5, 5, 5)
@@ -78,7 +83,8 @@ def testCheckmate1():
     print(board)
     assert board.in_checkmate(True)
 
-def testCheckmate2():
+
+def test_checkmate2():
     board = Board()
     move = Move()
     move.define_move(6, 4, 5, 4)
@@ -99,7 +105,8 @@ def testCheckmate2():
     assert board.in_check(False)
     assert board.in_checkmate(False)
 
-def testCheckmate3():
+
+def test_checkmate3():
     board = Board()
     move = Move()
     move.define_move(6, 5, 5, 5)

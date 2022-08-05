@@ -6,8 +6,8 @@ Peter &amp; Clayton Project
     - pawn promotion
   * piece capture
     - enpassant
-  * check  
-- Not working:
+  * check
   * checkmate
+- Not working:
   * stalemate
   * draw by repetition
