@@ -38,13 +38,6 @@ class Piece(ABC):
             if is_in_check:
                 checking = piece
                 break
-        print(f"this king color is {self.color}")
-        if self.color == "white":
-            print("color pieces we were looking at was black")
-        else:
-            print("WHITE")
-        print(f"piece checking is {checking} ")
-        print(f"piece at row 0 and col 2 is is {board.board[0][2]}")
         print(board)
         return checking
 

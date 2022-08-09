@@ -23,7 +23,7 @@ class Queen(Piece):
         VERTICAL = 0
         if startR != endR:
             VERTICAL = (startR - endR) / abs(endR - startR)
-        if startC != endC:
+        if startC != endC: 
             HORIZONTAL = (endC - startC) / abs(endC - startC)
 
         for diff in range(1, max(abs(startR - endR), abs(startC - endC))):
