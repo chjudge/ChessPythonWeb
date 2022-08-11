@@ -125,3 +125,79 @@ def test_checkmate3():
     board.move_piece(move, False)
     print(board)
     assert board.in_checkmate(True)
+
+def test_not_checkmate():
+    board = Board()
+    move = Move()
+    move.define_move(6, 5, 5, 5)
+    board.move_piece(move, True)
+    move.define_move(1, 4, 2, 4)
+    board.move_piece(move, False)
+    move.define_move(6, 6, 4, 6)
+    board.move_piece(move, True)
+    move.define_move(6, 7, 4, 7)
+    board.move_piece(move, True)
+    move.define_move(4, 7, 3, 7)
+    board.move_piece(move, True)
+    print(board)
+    assert board.in_checkmate(True) == False
+
+def test_stalemate():
+    board = Board()
+    move = Move()
+    move.define_move(6, 4, 5, 4)
+    board.move_piece(move, True)
+    move.define_move(1, 0, 3, 0)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(7, 3, 3, 7)
+    board.move_piece(move, True)
+    move.define_move(0, 0, 2, 0)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(3, 7, 3, 0)
+    board.move_piece(move, True)
+    move.define_move(1, 7, 3, 7)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(6, 7, 4, 7)
+    board.move_piece(move, True)
+    move.define_move(2, 0, 2, 7)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(3, 0, 1, 2)
+    board.move_piece(move, True)
+    move.define_move(1, 5, 2, 5)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(1, 2, 1, 3)
+    board.move_piece(move, True)
+    move.define_move(0, 4, 1, 5)
+    board.move_piece(move, False)
+    print("HERE")
+    #-------------------
+    move.define_move(1, 3, 1, 1)
+    board.move_piece(move, True)
+    move.define_move(0, 3, 5, 3)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(1, 1, 0, 1)
+    board.move_piece(move, True)
+    move.define_move(5, 3, 1, 7)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(0, 1, 0, 2)
+    board.move_piece(move, True)
+    move.define_move(1, 5, 2, 6)
+    board.move_piece(move, False)
+    #-------------------
+    move.define_move(0, 2, 2, 4)
+    board.move_piece(move, True)
+    #-------------------
+    # move.define_move(5, 4, 4, 4)
+    # board.move_piece(move, True)
+    # move.define_move(6, 3, 4, 3)
+    # board.move_piece(move, True)
+
+    print(board)
+    assert board.in_stalemate(False)

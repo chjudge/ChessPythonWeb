@@ -1,4 +1,5 @@
 import enum
+from tabnanny import check
 from colorama import Fore, Style
 from pieces.empty import Empty
 from pieces.pawn import Pawn
@@ -73,11 +74,23 @@ class Board:
     # determine if the player's king is in check
     def in_check(self, white_turn):
         king = self.white_pieces[4] if white_turn else self.black_pieces[4]
-        print("----------------------------------------------------------!")
-        print(self)
         print(f"{king.row} row & {king.col} col & {king.color} color")
-        print("----------------------------------------------------------!")
         return king.vulnerable(king.row, king.col, self)
+    
+    # determines if the game is a stalemate
+    def in_stalemate(self, white_turn):
+        checking_piece = self.in_check(white_turn)
+        if(not checking_piece):
+            for row in range(8):
+                for col in range(8):
+                    for p in self.white_pieces if white_turn else self.black_pieces:
+                        if (p.can_move(Move(p.row, p.col, row, col), self) and 
+                            (isinstance(p, King) and not p.vulnerable(row, col, self))):
+                            print(f'{p} {p.row},{p.col}')
+                            return False
+        else: 
+            return False
+        return True
 
     def in_checkmate(self, white_turn):
         checking_piece = self.in_check(white_turn)
@@ -90,23 +103,21 @@ class Board:
                         continue
                     if king.row + i < 0 or king.row + i > 7 or king.col + j < 0 or king.col + j > 7:
                         continue
-                    if king.can_move(Move(king.row, king.col, king.row + i, king.col + j), self):
+                    if (king.can_move(Move(king.row, king.col, king.row + i, king.col + j), self)
+                        and not king.vulnerable(king.row + i, king.col + j, self)):
                         print(f'king can move to {king.row + i},{king.col + j}')
-                        print("GFHEUKXEJMRHFKDRGSERGSERGARGARGWFFAWFASRRHUVHVRJHE6")
                         return False
             # check if the player can take the piece checking the king
             for p in self.white_pieces if white_turn else self.black_pieces:
                 if p.can_move(Move(p.row, p.col, checking_piece.row, checking_piece.col), self):
                     print(f'{p} {p.row},{p.col}')
-                    print("GFHEUKXEJMRHFKDRGSERGSERGARGARGWFFAWFASRRHUVHVRJHE5")
                     return False
-                if not isinstance(checking_piece, Knight):
+                if not isinstance(checking_piece, Knight) and not isinstance(p, King):
                     if king.row == checking_piece.row:
                         for c in range(1, abs(king.col - checking_piece.col)):
                             if p.can_move(Move(p.row, p.col, king.row,
                                                king.col + c * (1 if king.col < checking_piece.col else -1)), self):
                                 print(f'{p} {p.row},{p.col}')
-                                print("GFHEUKXEJMRHFKDRGSERGSERGARGARGWFFAWFASRRHUVHVRJHE4")
                                 return False
                     elif king.col == checking_piece.col:
                         for r in range(1, abs(king.row - checking_piece.row)):
@@ -114,7 +125,6 @@ class Board:
                                     Move(p.row, p.col, king.row + r * (1 if king.row < checking_piece.row else -1),
                                          king.col), self):
                                 print(f'{p} {p.row},{p.col}')
-                                print("GFHEUKXEJMRHFKDRGSERGSERGARGARGWFFAWFASRRHUVHVRJHE3")
                                 return False
                     else:
                         for r in range(1, abs(king.row - checking_piece.row)):
@@ -123,10 +133,9 @@ class Board:
                                         Move(p.row, p.col, king.row + r * (1 if king.row < checking_piece.row else -1),
                                              king.col + c * (1 if king.col < checking_piece.col else -1)), self):
                                     print(f'{p} {p.row},{p.col}')
-                                    print("GFHEUKXEJMRHFKDRGSERGSERGARGARGWFFAWFASRRHUVHVRJHE2")
+                                    print(f"piece is {p}")
                                     return False
             return True
-        print("GFHEUKXEJMRHFKDAERFGSERGAERGAERGARWFRHUVHVRJHE1")
         return False
 
     # moves a piece to the end location and sets the old square empty
@@ -139,19 +148,19 @@ class Board:
                 self.board[move.end_row - 1][move.end_col] = self.empty
 
         if not self.board[move.start_row][move.start_col].can_move(move, self):
+            print("ERROR")
             return Result.ILLEGAL
 
         self.board[move.start_row][move.start_col].piece_move(move.end_row, move.end_col)
         self.board[move.end_row][move.end_col] = self.board[move.start_row][move.start_col]
         self.board[move.start_row][move.start_col] = self.empty
-        print("----------------------------------------------------------#")
         print(self)
-        print("----------------------------------------------------------#")
 
         # moving into check
         if self.in_check(white_turn):
-            print("HELLO")
+            print("HELLO---------------------")
             self.undo()
+            print("")
             return Result.CHECK
 
         if len(self.en_passant) != 0:

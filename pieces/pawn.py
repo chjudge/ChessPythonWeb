@@ -39,7 +39,7 @@ class Pawn(Piece):
         endC = move.end_col
         color = self.color
 
-        # up-2, up1, take diagnose, en passant, false
+        # up-2, up1, take diagnol, en passant, false
         if (
                 isinstance(board.get_piece(endR, endC), Empty) and
                 self.hasMoved is False and
