@@ -8,5 +8,8 @@ app.config.from_mapping(
         USE_SESSION_FOR_NEXT=True,
     )
 
+app.boards = {}
+app.moves = {}
+app.WTM = {}
 
-from app import routes
+from app import routes, api

@@ -1,0 +1,54 @@
+.board {
+    width: 50%;
+    height: 80%;
+    margin: 5% auto;
+    border: 5px solid #333;
+}
+
+.black_bishop{
+    background: url('../images/pieces/black_bishop.svg') no-repeat center/contain;
+}
+
+.black_king{
+    background: url('../images/pieces/black_king.svg') no-repeat center/contain;
+}
+
+.black_knight{
+    background: url('../images/pieces/black_knight.svg') no-repeat center/contain;
+}
+
+.black_pawn{
+    background: url('../images/pieces/black_pawn.svg') no-repeat center/contain;
+}
+
+.black_queen{
+    background: url('../images/pieces/black_queen.svg') no-repeat center/contain;
+}
+
+.black_rook{
+    background: url('../images/pieces/black_rook.svg') no-repeat center/contain;
+}
+
+.white_bishop{
+    background: url('../images/pieces/white_bishop.svg') no-repeat center/contain;
+}
+
+.white_king{
+    background: url('../images/pieces/white_king.svg') no-repeat center/contain;
+}
+
+.white_knight{
+    background: url('../images/pieces/white_knight.svg') no-repeat center/contain;
+}
+
+.white_pawn{
+    background: url('../images/pieces/white_pawn.svg') no-repeat center/contain;
+}
+
+.white_queen{
+    background: url('../images/pieces/white_queen.svg') no-repeat center/contain;
+}
+
+.white_rook{
+    background: url('../images/pieces/white_rook.svg') no-repeat center/contain;
+}
