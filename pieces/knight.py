@@ -25,3 +25,6 @@ class Knight(Piece):
 
     def __str__(self):
         return "Kn "
+
+    def name(self):
+        return "knight"
