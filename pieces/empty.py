@@ -14,3 +14,6 @@ class Empty(Piece):
     # toString function
     def __str__(self):
         return "   "
+
+    def name(self):
+        return "empty"

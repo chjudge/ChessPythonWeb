@@ -29,3 +29,6 @@ class Bishop(Piece):
 
     def __str__(self):
         return " B "
+
+    def name(self):
+        return "bishop"
