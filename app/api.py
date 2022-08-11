@@ -9,7 +9,7 @@ from board import Result
 @app.get('/api/v1/board')
 def api_get_board():
     board = app.boards.get(session.get('board_key'))
-    board_arr = list(map(lambda x: list(map(lambda y: [str(y).strip(), y.color], x)), board.board))
+    board_arr = list(map(lambda x: list(map(lambda y: f'{y.color}_{y.name()}', x)), board.board))
     return jsonify({'requested': datetime.datetime.now().isoformat()},
                    {'board': board_arr})
 
