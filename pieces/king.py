@@ -83,3 +83,6 @@ class King(Piece):
 
     def __str__(self):
         return " K "
+
+    def name(self):
+        return "king"

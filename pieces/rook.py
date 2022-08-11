@@ -84,3 +84,6 @@ class Rook(Piece):
 
     def __str__(self):
         return " R "
+
+    def name(self):
+        return "rook"
