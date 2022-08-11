@@ -1,9 +1,28 @@
 .board {
-    width: 50%;
-    height: 80%;
+    background: url("../images/board.svg") no-repeat center/contain;
+    width: 500px;
+    height: 500px;
     margin: 5% auto;
     border: 5px solid #333;
 }
+
+.piece {
+    width: 12.5%;
+    height: 12.5%;
+    float: left;
+}
+
+.empty {
+
+}
+
+/*.dark {*/
+/*    background-color: #d28c45;*/
+/*}*/
+
+/*.light {*/
+/*    background-color: #ffcf9f;*/
+/*}*/
 
 .black_bishop{
     background: url('../images/pieces/black_bishop.svg') no-repeat center/contain;
