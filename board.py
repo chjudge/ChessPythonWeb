@@ -140,16 +140,15 @@ class Board:
 
     # moves a piece to the end location and sets the old square empty
     def move_piece(self, move, white_turn):
+        if not self.board[move.start_row][move.start_col].can_move(move, self):
+            print("ERROR")
+            return Result.ILLEGAL
         self.set_undo(move)
         if len(self.en_passant) != 0:
             if self.board[move.start_row][move.start_col].color == "white":
                 self.board[move.end_row + 1][move.end_col] = self.empty
             else:
                 self.board[move.end_row - 1][move.end_col] = self.empty
-
-        if not self.board[move.start_row][move.start_col].can_move(move, self):
-            print("ERROR")
-            return Result.ILLEGAL
 
         self.board[move.start_row][move.start_col].piece_move(move.end_row, move.end_col)
         self.board[move.end_row][move.end_col] = self.board[move.start_row][move.start_col]
